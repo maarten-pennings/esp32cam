@@ -6,11 +6,11 @@
 - Upload the sketch to the ESP32-CAM.
 - Connect terminal (115200).
 - Give a command, e.g. `h` for help.
-- Capture and image with '0', '1', or '2' (captures with now flash, low-power LED, or high-power LED).
+- Capture and image with `0`, `1`, or `2` (captures with no flash, low-power LED, or high-power LED).
 - Copy the lines from `[[` to `]]`.
 - Paste them in an editor and save the file, e.g. as `img.hex`.
 - Use `hex2png` python [script ](../py-hex2png) to convert the hex file to png.
-- Use a view to open the png.
+- Use a viewer to open the `img.png`.
 
 
 ## Example output
