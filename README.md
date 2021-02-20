@@ -28,7 +28,7 @@ This is the output while waving at the camera.
 ![Screenshot](esp32cam-ascii/screenshot.png)
 
 ### Collecting images
-The second project, [esp32cam-bmp](esp32cam-bmp), consists of two parts.
+The second project, [esp32cam-cmd](esp32cam-cmd), consists of two parts.
 The Arduino sketch captures an image and sends it to the host over USB/serial.
 A [PC/Python](py-hex2png) program converts the serial dump to a png image.
 
