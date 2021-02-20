@@ -7,15 +7,35 @@ You need
  - Board [schematics](https://github.com/SeeedDocument/forum_doc/raw/master/reg/ESP32_CAM_V1.6.pdf)
  - Either a stand-alone [USB-Serial adapter](https://nl.aliexpress.com/item/4000016600649.html), 
    or a [dedicated board](https://nl.aliexpress.com/item/1005001810692306.html)
- - Wiring instructions are [here](https://randomnerdtutorials.com/program-upload-code-esp32-cam/)
+ - Wiring instructions are [here](https://randomnerdtutorials.com/program-upload-code-esp32-cam/) - do NOT connect 5V from FTDI to 3V3 of ESP32
  - Using the espressif [library](https://github.com/espressif/esp32-camera/tree/master/driver)
+ 
+## Focus
+You can change the focal length of the camera, by turning the cap, see [focus](focus) page.
+
+## Harware mods
+I applied [two hardware mods](hwmods): adding a low-power LED and an adapter board.
 
 ## Projects
-At this moment, there is one project, [esp32cam-ascii](esp32cam-ascii), that captures an (grayscale QVGA) image, 
-subsamples that (5x horizontal and vertical) and renders the results as ASCII art. 
+My intention is to make a water-meter reader with a camera.
+Let's see How far I get.
+
+### Bringup
+The first project, [esp32cam-ascii](esp32cam-ascii), captures an (grayscale QVGA) image, 
+subsamples that (5x horizontal and vertical) and renders the results as ASCII art over serial.
 This is the output while waving at the camera.
 
 ![Screenshot](esp32cam-ascii/screenshot.png)
+
+### Collecting images
+The second project, [esp32cam-bmp](esp32cam-bmp), consists of two parts.
+The Arduino sketch captures an image and sends it to the host over USB/serial.
+A PC/Python program converts the serial dump to a png image.
+
+![Captured png](esp32cam-bmp/hex2bmp/img.png)
+
+There is a second Python pogram that periodically sends capture commands 
+to the Arduino Sketch, and automatically converts and saves the incoming bytes as an image.
 
 (end)
  

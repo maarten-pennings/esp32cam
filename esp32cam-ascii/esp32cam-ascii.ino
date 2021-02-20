@@ -48,7 +48,7 @@ uint8_t app_outframe[APP_OUTFRAMEHEIGHT*APP_OUTFRAMEWIDTH];
 #define APP_FLASHLED_PIN 4
 void app_flashled_setup() {
   pinMode(APP_FLASHLED_PIN, OUTPUT);
-  Serial.printf("fled: init success)\n"); 
+  Serial.printf("fled: init success\n"); 
 }
 
 void app_flashled_on() {
@@ -69,7 +69,7 @@ esp_err_t app_cam_setup() {
   esp_err_t err = esp_camera_init(&cammodel_config);
   // Check for success
   if( err==ESP_OK ) 
-    Serial.printf("cam : init success)\n"); 
+    Serial.printf("cam : init success\n"); 
   else 
     Serial.printf("cam : init failed (%d)\n",err); 
   // Return results
