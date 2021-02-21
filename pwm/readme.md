@@ -18,13 +18,13 @@ as led control ("ledc").
 
 The setup is as follows
 
-```C
+```
   ledcSetup(CHANNEL, FREQUENCY, RESOLUTION); // Setup a PWM channel
   ledcAttachPin(PIN, CHANNEL);               // Attach the PWM channel to the LED pin
   ledcWrite(CHANNEL, DUTY);                  // Change duty cycle of the PWM channel
 ```
 
-See [pwm.ino](pwm.ino) for a simple skecth that PWMs the high-power LED of the ESp32-CAM board.
+See [pwm.ino](pwm.ino) for a simple sketch that PWMs the high-power LED of the ESP32-CAM board.
 
 ## Calibration
 
@@ -80,12 +80,12 @@ The third colum shows a straight "fitted" line. As the below graph shows, the li
 
 Of course, after integrating the PWM with the camera app, the camera app no longer worked.
 I got this error
-```text
+```
 [E][camera.c:495] i2s_run(): Timeout waiting for VSYNC
 ```
 
 My suspicion was that the camera uses PWM itself.
-And indeed, my "own" [source]("../esp32cam-cmd/cammodel.h") has the line
+And indeed, my "own" [source]("../esp32cam-cmd/cammodel.h") has the line, so using channel 0 for the LED flash conflicts.
 ```
   .ledc_channel   = LEDC_CHANNEL_0,
 ```
