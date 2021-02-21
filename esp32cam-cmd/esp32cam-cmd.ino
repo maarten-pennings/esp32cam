@@ -1,36 +1,30 @@
 // esp32cam-cmd.ino - Sketch to get framebuffers from ESP32-CAM and download them to the host (PC)
 #include "esp_camera.h" // See https://github.com/espressif/esp32-camera/tree/master/driver
 #define APP_NAME    "esp32cam-cmd"
-#define APP_VERSION "V1"
+#define APP_VERSION "V2"
 
 
 // === FLED ===============================================================
 
 
-// The GPIO pin connected to the built-in flash LED
-#define FLED2_PIN  4 // high power led
-// The GPIO pin connected to the hand made low power LED
-#define FLED1_PIN 13 // low power led
-
-
-void fled_on(int led) {
-  if( led==1 ) digitalWrite(FLED1_PIN, HIGH);
-  if( led==2 ) digitalWrite(FLED2_PIN, HIGH);
-}
-
-
-void fled_off(int led) {
-  if( led==1 ) digitalWrite(FLED1_PIN, LOW);
-  if( led==2 ) digitalWrite(FLED2_PIN, LOW);
-}
-
+// Flash LED settings
+#define FLED_PIN         4    // The GPIO pin for the high-power LED.
+#define FLED_CHANNEL     15   // I just picked first PWM channel (of the 16).
+#define FLED_FREQUENCY   4096 // Some arbirary PWM frequemcy, high enough to not see it.
+#define FLED_RESOLUTION  8    // 8 bit resolution for the duty-cycle.
 
 void fled_setup() {
-  fled_off(1);
-  fled_off(2);
-  pinMode(FLED1_PIN, OUTPUT);
-  pinMode(FLED2_PIN, OUTPUT);
-  Serial.printf("fled: init success\n"); 
+  ledcSetup(FLED_CHANNEL, FLED_FREQUENCY, FLED_RESOLUTION); // Setup a PWM channel
+  ledcAttachPin(FLED_PIN, FLED_CHANNEL); // Attach the PWM channel to the LED pin
+  ledcWrite(FLED_CHANNEL, 0); // Set duty cycle of the PWM channel to 0 (off)
+  Serial.printf("fled: setup success\n"); 
+}
+
+void fled_set(int duty) {
+  if( duty<0 ) duty= 0;
+  if( duty>100 ) duty= 100;
+  duty= duty * ((1<<FLED_RESOLUTION)-1) / 100;
+  ledcWrite(FLED_CHANNEL, duty); 
 }
 
 
@@ -76,23 +70,23 @@ esp_err_t cam_setup() {
   esp_err_t err = esp_camera_init(&cammodel_config);
   // Check for success
   if( err==ESP_OK ) 
-    Serial.printf("cam : init success\n"); 
+    Serial.printf("cam : setup success\n"); 
   else 
-    Serial.printf("cam : init failed (%d)\n",err); 
+    Serial.printf("cam : setup failed (%d)\n",err); 
   // Return results
   return err;
 }
 
 
 // Capture image, down-sampling, and print to Serial
-// Uses led `led` for flash (0=none, 1=fled1, 2=fled2)
-esp_err_t cam_capture(int led) {
+// Uses duty cyle `duty` for the flash LED (0=off, 100=max)
+esp_err_t cam_capture(int duty) {
   // Capture with LED
-  fled_on(led);
-    delay(50);
+  fled_set(duty);
+    delay(10);
     camera_fb_t *fb = esp_camera_fb_get();
-    delay(50);
-  fled_off(led);
+    delay(10);
+  fled_set(0);
 
   if( !fb ) {
     Serial.printf("cam : fb get failed\n"); 
@@ -133,7 +127,7 @@ esp_err_t cam_capture(int led) {
 
 
 void time_setup() {  
-  Serial.printf("time: init success\n"); 
+  Serial.printf("time: setup success\n"); 
 }
 
 
@@ -161,10 +155,10 @@ char * time_string() {
 
 
 uint32_t frame = 0;
-void capture_print_frame(int led) {
-  Serial.printf("app : frame %u flash %d time %s \n", frame++, led, time_string());
+void capture_print_frame(int duty) {
+  Serial.printf("app : frame %u flash %d%% time %s \n", frame++, duty, time_string());
   Serial.printf("[[\n");
-  cam_capture(led);
+  cam_capture(duty);
   Serial.printf("]]\n" );            
 }
 
@@ -178,7 +172,6 @@ void setup() {
   time_setup();
   fled_setup();
   cam_setup();
-  for( int i=0; i<5; i++) {fled_on(2); delay(1); fled_off(2); delay(50); }
   Serial.printf("\napp : type 'h' for help\n" APP_PROMPT);
 }
 
@@ -190,8 +183,10 @@ void loop() {
       Serial.printf("\n" APP_PROMPT);
     } else {
       Serial.printf("%c\n", ch);
-      if( ch=='0' || ch=='1' || ch=='2' ) {
-        capture_print_frame(ch-'0');
+      if( ch>='0' && ch<='9'  ) {
+        capture_print_frame( (ch-'0')*10 );
+      } else if( ch=='x' ) {
+        capture_print_frame( 100 );
       } else if( ch=='t' ) {
         Serial.printf("app : time since power up %s\n", time_string());
       } else if( ch=='v' ) {
@@ -204,7 +199,7 @@ void loop() {
         Serial.printf("app : <pp> is pixel value in 2 hex digits\n");
         Serial.printf("app : <ssss> is sum of all <pp>s in 4 hex digits\n");
       } else if( ch=='h' ) {
-        Serial.printf("app : to capture '0' (no LED), '1' (low LED), or '2' (high LED)\n");
+        Serial.printf("app : '0'..'9','x' to capture with 0..90,100%% flash power\n");
         Serial.printf("app : 't' for time\n");
         Serial.printf("app : 'v' for version\n");
         Serial.printf("app : 'i' for frame info\n");

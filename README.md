@@ -15,6 +15,8 @@ You can change the focal length of the camera, by turning the cap, see [focus](f
 
 ## Harware mods
 I applied [two hardware mods](hwmods): adding a low-power LED and an adapter board.
+I later realized that the ESP32 has multiple [PWM channels](pwm), that you can map to any pin.
+That's much easier, so I undid my low-power LED mod.
 
 ## Projects
 My intention is to make a water-meter reader with a camera.

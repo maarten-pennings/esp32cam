@@ -1,6 +1,8 @@
 # Hardware modifications
 
-Modifications to the ESP32-CAM board
+Modifications to the ESP32-CAM board.
+
+
 
 ## Low-power flash LED
 
@@ -44,6 +46,13 @@ Here we see it mounted on the ESP32-CAM, connecting it to IO13 and GND.
 ![Flash LED 1 connect](fled1-connect.jpg)
 
 
+### PWM
+
+I later realized that the ESP32 has multiple [PWM channels](../pwm), that you can map to any pin.
+That's much easier, so I undid my low-power LED mod.
+
+
+
 ## Adapter board
 
 The ESP32-CAM is hard to program. You need an FTDI (USB to serial) cable.
@@ -77,3 +86,6 @@ And the wiring at the back.
 Here two overview photos
 
 ![Adapter and ESP32](adapter-esp32.jpg)
+
+
+(end)

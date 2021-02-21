@@ -15,16 +15,16 @@
 
 ## Example output
 
-```
+```text
 app : welcome to esp32cam-cmd
-app : version V1
-time: init success
-fled: init success
-cam : init success
+app : version V2
+time: setup success
+fled: setup success
+cam : setup success
 
 app : type 'h' for help
 >> h
-app : to capture '0' (no LED), '1' (low LED), or '2' (high LED)
+app : '0'..'9','x' to capture with 0..90,100% flash power
 app : 't' for time
 app : 'v' for version
 app : 'i' for frame info
@@ -37,11 +37,11 @@ app : <rrrr> is row number in 4 hex digits
 app : <pp> is pixel value in 2 hex digits
 app : <ssss> is sum of all <pp>s in 4 hex digits
 >> v
-app : esp32cam-cmd V1
+app : esp32cam-cmd V2
 >> t
-app : time since power up 0d-00:00:35
->> 1
-app : frame 0 flash 1 time 0d-00:00:42 
+app : time since power up 0d-00:00:51
+>> 3
+app : frame 0 flash 30% time 0d-00:01:00 
 [[
 0000:403f3c3d3e37393c3c3a343....fffffffffffffffffffffff:6ddf
 0001:4f5558564d4d4e534946434....fffffffffffffffffffffff:87f5
@@ -59,3 +59,5 @@ app : frame 0 flash 1 time 0d-00:00:42
 ```
 
 (end)
+
+
