@@ -23,8 +23,8 @@ My intention is to make a water-meter reader with a camera.
 Let's see How far I get.
 
 ### Bringup
-The first project, [esp32cam-ascii](esp32cam-ascii), captures an (grayscale QVGA) image, 
-subsamples that (5x horizontal and vertical) and renders the results as ASCII art over serial.
+The first project, [esp32cam-ascii](esp32cam-ascii), captures an (gray-scale QVGA) image, 
+sub-samples that (5x horizontal and vertical) and renders the results as ASCII art over serial.
 This is the output while waving at the camera.
 
 ![Screenshot](esp32cam-ascii/screenshot.png)

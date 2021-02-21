@@ -13,7 +13,7 @@ I added a low-power led to illuminate the scene ("flash" light).
 ### Problem of the existing flash LED
 
 The ESP32-CAM comes with a high-power white LED.
-It is so powerfull that it completely washes out all texture.
+It is so powerful that it completely washes out all texture.
 
 This is an example of photo of a letter at ~15cm, using the high-power LED (Flash LED 2).
 

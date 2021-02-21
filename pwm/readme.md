@@ -6,7 +6,7 @@ Using PWM for the flash LED.
 
 The ESP32-CAM comes with an on-board high-power LED to illuminate the scene (a "flash").
 However the LED is so powerfull that it completely washes out all texture, see [hardware fix](../hwmods) for washed-out images.
-My first solution was to add a low-power LED, a [harwdare mod](../hwmods), but later I realized that the ESP32
+My first solution was to add a low-power LED, a [hardware mod](../hwmods), but later I realized that the ESP32
 has a flexible PWM block. I tried that out, and then removed the low-power LED.
 
 ## PWM
@@ -14,7 +14,7 @@ has a flexible PWM block. I tried that out, and then removed the low-power LED.
 The ESP32 has a hardware block the generates square waves of a given frequency and duty cycle.
 This block has 16 channels, and those channels can be mapped to "any" GPIO pin.
 I would be tempted to call the block "pwm" (pulse width modulation), but Arduino/ESP32 refers to it
-as led control ("ledc").
+as "ledc" (presumably "led control").
 
 The setup is as follows
 
@@ -72,7 +72,7 @@ and the light level reported by the app (second column).
   |     240    |  789  |   792  |
   |     248    |  807  |   818  |
 
-The third colum shows a straight "fitted" line. As the below graph shows, the light-level is linear with the PWM.
+The third column shows a straight "fitted" line. As the below graph shows, the light-level is linear with the PWM.
 
 ![Graph](graph.png)
 
