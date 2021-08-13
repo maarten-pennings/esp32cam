@@ -54,5 +54,10 @@ to the Arduino Sketch, and automatically converts and saves the incoming bytes a
 My first real project is to use machine learning to distinguish [rock, paper, scissors](rock-paper-scissors), shot with an ESP32-CAM.
 The inference is also supposed to run on the ESP32.
 
+![rock](rock-paper-scissors/data/rock/rock000.png)
+![paper](rock-paper-scissors/data/paper/paper018.png)
+![scissors](rock-paper-scissors/data/scissors/scissors037.png)
+
+
 (end)
  
