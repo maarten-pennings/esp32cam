@@ -4,7 +4,7 @@ My first real project with the ESp32-CAM is to use machine learning to distingui
 The inference is also supposed to run on the ESP32.
 
 At this moment I completed
- - A photo rig.
+ - A photo rig. I first made an enclosure for the ESP32-CAM to match Lego Mindstorms Robot Inventor.
    ![photo rig](rig.jpg)
  - A ESP32 sketch [esp32cam-train.ino](esp32cam-train) that on a key press (CR over serial) takes a photo, 
    crops a fixed region, averages a block of 4x4 pixels into one, and dumps the pixels values over serial (in hex an as ASCII art).
