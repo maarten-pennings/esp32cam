@@ -58,6 +58,8 @@ The inference is also supposed to run on the ESP32.
 ![paper](rock-paper-scissors/data/paper/paper018.png)
 ![scissors](rock-paper-scissors/data/scissors/scissors037.png)
 
+There is a [machine learning project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) to make
+this into a lego robot.
 
 (end)
  
