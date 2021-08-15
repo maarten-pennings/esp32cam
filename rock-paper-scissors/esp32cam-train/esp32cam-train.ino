@@ -3,20 +3,19 @@
 #define CAMMODEL_AI_THINKER
 #include "cammodel.h" // Make sure you define your camera model before the #include
 #define APP_NAME    "esp32cam-train"
-#define APP_VERSION "V1"
+#define APP_VERSION "V2"
 
 
 // What to capture =============================================================
 
-// Region of Interest (se below, inframe is 320x240)
-#define APP_CROP_X0       110
-#define APP_CROP_Y0       40
-#define APP_CROP_X1       230
-#define APP_CROP_Y1       220
+// Region of Interest (see below, inframe is 320x240, but ascii-out is rotated 90 CW)
+#define APP_CROP_X0       122 // top of ascii-out
+#define APP_CROP_Y0       36  // left of ascii-out
+#define APP_CROP_X1       234 // bottom of ascii-out
+#define APP_CROP_Y1       220 // right of ascii-out
 
 // Subsampling ratio (an input block of APP_BLOCKSIZE*APP_BLOCKSIZE becomes one output block)
 #define APP_BLOCKSIZE     4
-
 
 
 // Flash LED driver =============================================================
@@ -40,6 +39,28 @@ void fled_set(int duty) {
   if( duty>100 ) duty= 100;
   duty= duty * ((1<<FLED_RESOLUTION)-1) / 100;
   ledcWrite(FLED_CHANNEL, duty); 
+}
+
+
+// Image processing ================================================================
+
+
+// Histogram equalization (https://en.wikipedia.org/wiki/Histogram_equalization)
+void img_histeq(uint8_t * img, int imgsize) {
+  #define COLS 256       // Number of colors
+  static int bins[COLS]; // Histogram bins 
+  
+  // Histogram bins cleared to 0
+  for( int i = 0; i<COLS; i++ ) bins[i]=0;
+  // Histogram bins count pixel data from image
+  for( int i = 0; i<imgsize; i++ ) bins[ img[i] ]+=1;
+  // Cumulate histogram bins
+  for( int i = 1; i<COLS; i++ ) bins[i]+=bins[i-1];
+  // Find smallest non-zero bin
+  int binmin=0;
+  for( int i = 0; i<COLS; i++ ) if( bins[i]>0 ) { binmin=bins[i]; break; }
+  // Equalize (+0.5 is for rounding)
+  for( int i = 0; i<imgsize; i++ ) img[i] = (bins[img[i]]-binmin) * 255.0 / (bins[COLS-1]-binmin) + 0.5;
 }
 
 
@@ -82,7 +103,7 @@ esp_err_t cam_setup() {
 }
 
 // Capture image, down-sampling, and save in cam_outframe[CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH]
-esp_err_t cam_capture() {
+esp_err_t cam_capture(int histeq) {
   camera_fb_t *fb = esp_camera_fb_get();
   
   if( !fb ) {
@@ -117,14 +138,19 @@ esp_err_t cam_capture() {
     }
   }
 
+  // Histogram equalization
+  if( histeq ) {
+    img_histeq(cam_outframe, CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH ); 
+  }
+  
   return ESP_OK;
 }
 
 
-// Print cam_outframe[CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH] to Serial
+// Print ascii-out to serial, i.e. cam_outframe[CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH]
 void cam_printframe() {
   static const char *level="W@8Oo=- ";
-  // The order of the for-x and for-y loop determines rotation.
+  // The order of the for-x and for-y loop determines rotation. [note2]
   // A for loop can count up or down; this determines mirroring.
   for( int x=0; x<CAM_OUTFRAMEWIDTH; x++ ) {
     Serial.printf("%3d: ",x);
@@ -145,7 +171,9 @@ void cam_printframe() {
 // Application =============================================================
 
 
-int app_count = 0;
+int app_fled   = 5; // max flash led
+int app_histeq = 1; // histogram equalization enabled
+int app_count  = 0; // number of captures
 
 void app_prompt() {
   Serial.printf("%d>> ",app_count);
@@ -163,33 +191,39 @@ void setup() {
   app_prompt();
 }
 
-int app_fled = 5;
-
 void loop() {
   if( Serial.available()>0 ) {
     char ch = Serial.read();
     Serial.printf("%c\n", ch);
     if( ch>='0' && ch<='5'  ) {
       int old= app_fled;
-      app_fled= (ch-'0')*10;
+      app_fled= ch-'0';
       Serial.printf("app : flash level %d -> %d\n",old,app_fled);
+    } else if( ch=='-' || ch=='+' ) {
+      int old= app_histeq;
+      app_histeq= ch=='+';
+      Serial.printf("app : histogram equalization %d -> %d\n",old,app_histeq);
     } else if( ch=='v' ) {
       Serial.printf("app : name " APP_NAME "\n");
       Serial.printf("app : version " APP_VERSION "\n");
     } else if( ch=='i' ) {
-      Serial.printf("app : input frame %dx%d pixels, monochrome 8 bit\n", CAM_INFRAMEWIDTH, CAM_INFRAMEHEIGHT);
-      Serial.printf("app : region of interest %dx%d - %dx%d\n", APP_CROP_X0,APP_CROP_Y0,APP_CROP_X1,APP_CROP_Y1);
-      Serial.printf("app : subsampling %dx\n", APP_BLOCKSIZE);
-      Serial.printf("app : output frame %dx%d pixels, monochrome 8 bit\n", CAM_OUTFRAMEWIDTH, CAM_OUTFRAMEHEIGHT);
+      Serial.printf("app : captured frame        : %d×%d pixels (8 bit mono)\n", CAM_INFRAMEWIDTH, CAM_INFRAMEHEIGHT);
+      Serial.printf("app : region of interest    : %d×%d - %d×%d\n", APP_CROP_X0,APP_CROP_Y0,APP_CROP_X1,APP_CROP_Y1);
+      Serial.printf("app : pre-subsampling       : %dx%d\n", APP_CROP_X1-APP_CROP_X0,APP_CROP_Y1-APP_CROP_Y0);
+      Serial.printf("app : subsampling           : %d times\n", APP_BLOCKSIZE);
+      Serial.printf("app : histogram equalization: %s\n", app_histeq ? "yes" : "no");
+      Serial.printf("app : post-subsampling      : %d×%d pixels (8 bit mono)\n", CAM_OUTFRAMEWIDTH, CAM_OUTFRAMEHEIGHT);
+      Serial.printf("app : ascii-out             : %d generated (90 degree rotated CW)\n",app_count); // see [note1] and [note2]
     } else if( ch=='h' ) {
       Serial.printf("app : '0'..'5' to set the flash level\n");
+      Serial.printf("app : '-'/'+' to disable/enable histogram equalization\n");
       Serial.printf("app : 'v' for version\n");
       Serial.printf("app : 'i' for frame info\n");
-      Serial.printf("app : ' ' (or an empty command) to capture an image\n");
+      Serial.printf("app : 'c', ' ', or an empty command, to capture an image\n");
       Serial.printf("app : 'h' for this help\n");
-    } else if( ch==' ' || ch==10 || ch==13) {
+    } else if( ch=='c' || ch==' ' || ch==10 || ch==13) {
       if( app_fled>0 ) fled_set(app_fled*20);
-        cam_capture(); // saved in cam_outframe[CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH]
+        cam_capture(app_histeq); // saved in cam_outframe[CAM_OUTFRAMEHEIGHT*CAM_OUTFRAMEWIDTH]
       if( app_fled>0 ) fled_set(0);
       cam_printframe();
       app_count++;
