@@ -52,14 +52,9 @@ to the Arduino Sketch, and automatically converts and saves the incoming bytes a
 ## My real projects
 
 My first real project is to use machine learning to distinguish [rock, paper, scissors](rock-paper-scissors), shot with an ESP32-CAM.
-The inference is also supposed to run on the ESP32.
-
-![rock](rock-paper-scissors/data/rock/rock000.png)
-![paper](rock-paper-scissors/data/paper/paper018.png)
-![scissors](rock-paper-scissors/data/scissors/scissors037.png)
-
-There is a [machine learning project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) to make
-this into a lego robot.
+The inference is also supposed to run on the ESP32. This project is about the ESP32 firmware capturing the training images.
+There is also a [machine learning project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) 
+to generate the model, do the training and convert it to TensorFlow Lite.
 
 (end)
  
