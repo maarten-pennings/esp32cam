@@ -3,7 +3,7 @@
 #define CAMMODEL_AI_THINKER
 #include "cammodel.h" // Make sure you define your camera model before the #include
 #define APP_NAME    "esp32cam-train"
-#define APP_VERSION "V2"
+#define APP_VERSION "V3"
 
 
 // What to capture =============================================================
@@ -158,12 +158,12 @@ void cam_printframe() {
     for( int y=CAM_OUTFRAMEHEIGHT-1; y>=0; y-- ) {
       Serial.printf("%02x",cam_outframe[x+CAM_OUTFRAMEWIDTH*y]);
     }
-    Serial.printf(" ");
+    Serial.printf(" |");
     // next print ascii impression
     for( int y=CAM_OUTFRAMEHEIGHT-1; y>=0; y-- ) {
       Serial.printf("%c",level[cam_outframe[x+CAM_OUTFRAMEWIDTH*y]/32]);
     }
-    Serial.printf("\n");
+    Serial.printf("|\n");
   }
 }
 
