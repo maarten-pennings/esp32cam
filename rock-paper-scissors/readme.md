@@ -48,12 +48,12 @@ At this moment I completed
    ![paper](data/paper/paper018.png)
    ![scissors](data/scissors/scissors037.png)
  - A convolutional neural net (CNN) as a separate [ML](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
- 
-Todo
- - Port the CNN to TensorFlow lite
- - Port it to TensorFlow Lote for the ESP32 micro-controller 
-   (tried it, check my [sine](https://github.com/maarten-pennings/MachineLearning/tree/main/sine) project).
- - Maybe: connect it to the Lego Mindstorms Robot Inventor hub (serial? Bluetooth?) and have it do something.
+ - Port the CNN to TensorFlow lite, same [githb project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
+ - Port it to TensorFlow Lite for the ESP32 micro-controller, same [githb project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
+ - A self-contained ESP32 [sketch](esp32cam-predict) that predict the hand pose.
+
+Todo:
+ - connect it to the Lego Mindstorms Robot Inventor hub (serial? Bluetooth?) and have it do something.
 
 (end)
 
