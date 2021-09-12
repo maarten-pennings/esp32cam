@@ -6,6 +6,10 @@ The inference is also supposed to run on the ESP32.
 At this moment I completed
  - A photo rig. I first made an enclosure for the ESP32-CAM to match Lego Mindstorms Robot Inventor.
    ![photo rig](rig.jpg)
+   
+ - Since it does not use WiFi, here is a close-up without the antenna.
+   ![TFLcam](rock-paper-scissors/tflcamv1.jpg)
+ 
  - A ESP32 sketch [esp32cam-train.ino](esp32cam-train) that on a key press (CR over serial) takes a photo, 
    crops a fixed region, averages a block of 4x4 pixels into one, performs a histogram equalization
    and dumps the pixels values over serial (in hex and as ASCII art).
@@ -48,12 +52,12 @@ At this moment I completed
    ![paper](data/paper/paper018.png)
    ![scissors](data/scissors/scissors037.png)
  - A convolutional neural net (CNN) as a separate [ML](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
- - Port the CNN to TensorFlow lite, same [githb project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
- - Port it to TensorFlow Lite for the ESP32 micro-controller, same [githb project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
+ - Port the CNN to TensorFlow **Lite**, same [github project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors).
+ - Port it to TensorFlow Lite for the **ESP32 micro-controller**, using [EloquentTinyML](https://github.com/eloquentarduino/EloquentTinyML]. 
+   See the [test set](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors/rps32), again in the same github project.
  - A self-contained ESP32 [sketch](esp32cam-predict) that predict the hand pose.
-
-Todo:
- - connect it to the Lego Mindstorms Robot Inventor hub (serial? Bluetooth?) and have it do something.
+ - An even fancier version is the [TFLcam](https://github.com/maarten-pennings/TFLcam) in a separate repo.
+   This allows one to save the model on an SD card, slide it in the ESP32-CAM, and get predictions over serial.
 
 (end)
 
