@@ -24,7 +24,7 @@ You need
 The easiest way to start - assuming you have a standard board - is probably to use Arduino with the built-in camera example.
  - First chose your board, e.g. Tools > Board > ESP32 Arduino > AI Thinker ESP32-CAM.
  - Next load the example, e.g. File > Example > Examples for AI Thinker ESP32-CAM > ESP32 > camera > CameraWebServer.
- - **Important Select** the camera model at the top of the `ino` file in the example, e.g. `#define CAMERA_MODEL_AI_THINKER`.
+ - **Important** Select the camera model at the top of the `ino` file in the example, e.g. `#define CAMERA_MODEL_AI_THINKER`.
 
 ## My experiments
 
@@ -53,7 +53,7 @@ A [PC/Python](py-hex2png) program converts the serial dump to a png image.
 There is a second [Python pogram](py-capture) that periodically sends capture commands 
 to the Arduino Sketch, and automatically converts and saves the incoming bytes as an image.
 
-**Note** In the mean time I no longer hex-dump an image over serial and use a Python script to convert to png.
+Note In the mean time I no longer hex-dump an image over serial and use a Python script to convert to png.
 Instead I dump the image (still text over serial) in the [pgm format](http://netpbm.sourceforge.net/doc/pgm.html) with magic number is P2.
 You can copy and paste that to notepad, save it as pgm file and then open it, e.g. using [IrfanView](https://www.irfanview.com).
 
@@ -76,9 +76,10 @@ You can see the result in action in this [video](https://www.youtube.com/watch?v
 
 ### TFLcam
 
-I have converted the previous project in an ESP32 TensorFlow Lite cam. 
-It got its own [repo](https://github.com/maarten-pennings/TFLcam).
-
+In my second real project I have converted the rock-paper-scissors cam in a generic ESP32 TensorFlow Lite cam. 
+It has its own [repo](https://github.com/maarten-pennings/TFLcam).
+This allows one to save any (small enough) TensorFlow Lite model on an SD card, slide it in the ESP32-CAM, and get predictions over serial.
+ 
 ![TFLcam](rock-paper-scissors/tflcamv1.jpg)
 
 (end)

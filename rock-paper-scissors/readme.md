@@ -8,7 +8,7 @@ At this moment I completed
    ![photo rig](rig.jpg)
    
  - Since it does not use WiFi, here is a close-up without the antenna.
-   ![TFLcam](rock-paper-scissors/tflcamv1.jpg)
+   ![TFLcam](tflcamv1.jpg)
  
  - A ESP32 sketch [esp32cam-train.ino](esp32cam-train) that on a key press (CR over serial) takes a photo, 
    crops a fixed region, averages a block of 4x4 pixels into one, performs a histogram equalization
