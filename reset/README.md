@@ -50,12 +50,13 @@ This is also the warning note you find at the bottom on Espressif's page on
 [serial connection](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html).
 
 My solution is to use one of my old favorite terminal programs [Realterm](https://realterm.sourceforge.io/).
-It is old, I suggest using version 2.0.0.43 from 	2007-06-21. This is one of the few programs that allows control of the
-RTS and DTR pins.
+It has not received much development attention, I suggest using version 2.0.0.57 from 2008-02-28
+(2.0.0.70 from 2014 is better but needs to be ran once as administrator for some registry keys).
+This is one of the few programs that allows control of the RTS and DTR pins.
 
 The screen shot below shows how to reset to flash mode.
 You find these controls on the tab "Pins".
-It assumes COM port, baudrate etc is set correctly in the "Port" tab.
+It assumes COM port, baud rate etc is set correctly in the "Port" tab.
 
 ![Reset to flash](reset-to-flash.png)
 
