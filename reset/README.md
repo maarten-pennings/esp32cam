@@ -12,6 +12,7 @@ Some background. The ESP32 has a reset pin. On most boards, including the ESP32-
 When the ESP32 resets, either due to a power-on or via a push on the reset button, the ESP (re-)boots. It can boot into two different programs: 
 _our application_, the sketch we program in Arduino, or the _flash_ program. The flash program is build-in by Espressif. 
 The flash program allows a host to send bytes to the ESP32 (via the serial link), and it will take those bytes and burn them to the ESP32's flash.
+So, the flash program is used to flash our application.
 
 In other words, upon boot, the ESP32 can be in two modes: application and flash.
 
@@ -21,7 +22,7 @@ When the GPIO-0 pin is grounded upon reset, the ESP32 resets into flash mode.
 
 ## Using an "FTDI" adapter
 
-If you use a a bare [ESP32-CAM with a standalone "FTDI" adapter](https://www.aliexpress.com/item/4000016600649.html), the GPIO-0 pin is not connected.
+If you use a bare [ESP32-CAM with a standalone "FTDI" adapter](https://www.aliexpress.com/item/4000016600649.html), the GPIO-0 pin is not connected.
 Therefore, upon power-on or when pressing the reset button the board resets into the application mode. 
 Good for normal use.
 
@@ -29,7 +30,7 @@ However, programming is a nuisance.
 Each time you _Upload_ a compiled program (from the Arduino IDE), 
 you need to ground GPIO-0 and press the reset button to bring the ESP in flash mode.
 
-That's why I made a [hardware mods](../hwmods) for that.
+That's why I made a [hardware mod](../hwmods) for that.
 
 
 ## Using the ESP32-CAM-MB 
@@ -40,17 +41,17 @@ Such a chip not only connects to TX and RX of the ESP32, it also connects to RES
 
 The Arduino IDE supports this, so uploading is a breeze: no pushing of reset/flash buttons, just press the Upload in Arduino.
 The IDE pulls GPIO-0 to ground (using DTR), pulses RESET (via RTS) and uploads the program via TX and RX.
-Also the using the Arduino Serial Monitor poses no problems; again Arduino knows about those pins.
+Also using the Arduino Serial Monitor poses no problems; again Arduino knows about those pins.
 
 However, a standalone terminal program has trouble with this board. 
 I'm not sure why, because for ESP8266 NodeMCU boards, with a similar CH340 setup, I never had any problem.
 But when I start a terminal program like [putty](https://www.putty.org/) 
-it has DTR high (GPIO-0) and RTS high (RESET), so the ESP32 is stuck in reset of flash mode.
+it has DTR high (GPIO-0) and RTS high (RESET), so the ESP32 is stuck in reset or in the flash mode.
 This is also the warning note you find at the bottom on Espressif's page on 
 [serial connection](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html).
 
 My solution is to use one of my old favorite terminal programs [Realterm](https://realterm.sourceforge.io/).
-It has not received much development attention, I suggest using version 2.0.0.57 from 2008-02-28
+It has not received much development attention lately, I suggest using version 2.0.0.57 from 2008-02-28
 (2.0.0.70 from 2014 is better but needs to be ran once as administrator for some registry keys).
 This is one of the few programs that allows control of the RTS and DTR pins.
 
