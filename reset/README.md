@@ -5,7 +5,7 @@ Resetting the ESP32-CAM and transferring data.
 
 I had some problems in communicating with the ESP32-CAM.
 The problems are two-fold. Firstly, there is the issue of programming the ESP32. 
-Secondly, there is the issue of transferring serial data.
+Secondly, there is the issue of transferring serial data while running our own application.
 The two are related.
 
 Some background. The ESP32 has a reset pin. On most boards, including the ESP32-CAM, this pin is connected to a small push button.
@@ -23,11 +23,11 @@ When the GPIO-0 pin is grounded upon reset, the ESP32 resets into flash mode.
 ## Using an "FTDI" adapter
 
 If you use a bare [ESP32-CAM with a standalone "FTDI" adapter](https://www.aliexpress.com/item/4000016600649.html), the GPIO-0 pin is not connected.
-Therefore, upon power-on or when pressing the reset button the board resets into the application mode. 
+Therefore, upon power-on or when pressing the reset button, the board resets into the application mode. 
 Good for normal use.
 
 However, programming is a nuisance.
-Each time you _Upload_ a compiled program (from the Arduino IDE), 
+Each time you _upload_ a compiled program (from the Arduino IDE), 
 you need to ground GPIO-0 and press the reset button to bring the ESP in flash mode.
 
 That's why I made a [hardware mod](../hwmods) for that.
@@ -51,9 +51,9 @@ This is also the warning note you find at the bottom on Espressif's page on
 [serial connection](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html).
 
 My solution is to use one of my old favorite terminal programs [Realterm](https://realterm.sourceforge.io/).
-It has not received much development attention lately, I suggest using version 2.0.0.57 from 2008-02-28
-(2.0.0.70 from 2014 is better but needs to be ran once as administrator for some registry keys).
-This is one of the few programs that allows control of the RTS and DTR pins.
+It has not received much development attention lately. I suggest using version 2.0.0.57 from 2008-02-28
+(or better, 2.0.0.70 from 2014, but it needs to be ran once as administrator for some registry keys).
+This is one of the few terminal programs I know of that allows control of the RTS and DTR pins.
 
 The screen shot below shows how to reset to flash mode.
 You find these controls on the tab "Pins".
