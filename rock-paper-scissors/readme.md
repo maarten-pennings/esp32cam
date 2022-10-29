@@ -53,7 +53,7 @@ At this moment I completed
    ![scissors](data/scissors/scissors037.png)
  - A convolutional neural net (CNN) as a separate [ML](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors) github project.
  - Port the CNN to TensorFlow **Lite**, same [github project](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors).
- - Port it to TensorFlow Lite for the **ESP32 micro-controller**, using [EloquentTinyML](https://github.com/eloquentarduino/EloquentTinyML]. 
+ - Port it to TensorFlow Lite for the **ESP32 micro-controller**, using [EloquentTinyML](https://github.com/eloquentarduino/EloquentTinyML). 
    See the [test set](https://github.com/maarten-pennings/MachineLearning/tree/main/rock-paper-scissors/rps32), again in the same github project.
  - A self-contained ESP32 [sketch](esp32cam-predict) that predict the hand pose.
  - An even fancier version is the [TFLcam](https://github.com/maarten-pennings/TFLcam) in a separate repo.
